@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="全栈开发知识学习平台 - 从前端到后端的完整学习路径">
+    <meta name="keywords" content="全栈开发,前端,后端,数据库,DevOps,编程教程">
+    <title>全栈开发知识库</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Tailwind 配置 -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3b82f6',
+                        secondary: '#8b5cf6',
+                        accent: '#06b6d4',
+                    },
+                    animation: {
+                        'float': 'float 3s ease-in-out infinite',
+                        'fadeIn': 'fadeIn 0.5s ease-in',
+                        'slideIn': 'slideIn 0.3s ease-out',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        },
+                        fadeIn: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        slideIn: {
+                            '0%': { transform: 'translateX(-100%)' },
+                            '100%': { transform: 'translateX(0)' },
+                        },
+                    },
+                }
+            }
+        }
+    </script>
+
+    <!-- Prism.js 代码高亮 CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css" rel="stylesheet" />
+
+    <!-- 自定义样式 -->
+    <link rel="stylesheet" href="css/custom.css">
+</head>
+<body class="bg-gray-50 text-gray-900">
+
+    <!-- 顶部导航栏 -->
+    <header class="fixed top-0 left-0 right-0 h-16 bg-gradient-to-r from-blue-500 to-purple-600 shadow-lg z-50">
+        <div class="container mx-auto px-4 h-full flex items-center justify-between">
+            <!-- Logo -->
+            <div class="flex items-center gap-3 cursor-pointer" onclick="window.location.hash = '#home'">
+                <span class="text-4xl animate-float">🚀</span>
+                <span class="text-white text-xl font-bold hidden sm:inline">全栈开发知识库</span>
+                <span class="text-white text-xl font-bold sm:hidden">全栈知识</span>
+            </div>
+
+            <!-- 桌面导航 -->
+            <nav class="hidden md:flex items-center gap-2" id="desktopNav">
+                <a href="#home" class="nav-link px-4 py-2 text-white/90 hover:bg-white/10 rounded-lg transition-all duration-200 font-medium" data-route="home">首页</a>
+                <a href="#frontend" class="nav-link px-4 py-2 text-white/90 hover:bg-white/10 rounded-lg transition-all duration-200 font-medium" data-route="frontend">前端开发</a>
+                <a href="#backend" class="nav-link px-4 py-2 text-white/90 hover:bg-white/10 rounded-lg transition-all duration-200 font-medium" data-route="backend">后端开发</a>
+                <a href="#database" class="nav-link px-4 py-2 text-white/90 hover:bg-white/10 rounded-lg transition-all duration-200 font-medium" data-route="database">数据库</a>
+                <a href="#devops" class="nav-link px-4 py-2 text-white/90 hover:bg-white/10 rounded-lg transition-all duration-200 font-medium" data-route="devops">DevOps</a>
+                <a href="#ai" class="nav-link px-4 py-2 text-white/90 hover:bg-white/10 rounded-lg transition-all duration-200 font-medium" data-route="ai">AI人工智能</a>
+                <a href="#about" class="nav-link px-4 py-2 text-white/90 hover:bg-white/10 rounded-lg transition-all duration-200 font-medium" data-route="about">关于</a>
+            </nav>
+
+            <!-- 移动端菜单按钮 -->
+            <button class="md:hidden flex flex-col gap-1.5 p-2" id="mobileMenuToggle" aria-label="切换菜单">
+                <span class="w-6 h-0.5 bg-white transition-all duration-200"></span>
+                <span class="w-6 h-0.5 bg-white transition-all duration-200"></span>
+                <span class="w-6 h-0.5 bg-white transition-all duration-200"></span>
+            </button>
+        </div>
+
+        <!-- 移动端导航菜单 -->
+        <nav class="md:hidden fixed top-16 left-0 right-0 bg-gradient-to-r from-blue-500 to-purple-600 shadow-lg transform -translate-y-full opacity-0 invisible transition-all duration-300" id="mobileNav">
+            <div class="flex flex-col p-4 gap-2">
+                <a href="#home" class="nav-link px-4 py-3 text-white/90 hover:bg-white/10 rounded-lg transition-all duration-200 font-medium" data-route="home">首页</a>
+                <a href="#frontend" class="nav-link px-4 py-3 text-white/90 hover:bg-white/10 rounded-lg transition-all duration-200 font-medium" data-route="frontend">前端开发</a>
+                <a href="#backend" class="nav-link px-4 py-3 text-white/90 hover:bg-white/10 rounded-lg transition-all duration-200 font-medium" data-route="backend">后端开发</a>
+                <a href="#database" class="nav-link px-4 py-3 text-white/90 hover:bg-white/10 rounded-lg transition-all duration-200 font-medium" data-route="database">数据库</a>
+                <a href="#devops" class="nav-link px-4 py-3 text-white/90 hover:bg-white/10 rounded-lg transition-all duration-200 font-medium" data-route="devops">DevOps</a>
+                <a href="#ai" class="nav-link px-4 py-3 text-white/90 hover:bg-white/10 rounded-lg transition-all duration-200 font-medium" data-route="ai">AI人工智能</a>
+                <a href="#about" class="nav-link px-4 py-3 text-white/90 hover:bg-white/10 rounded-lg transition-all duration-200 font-medium" data-route="about">关于</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- 主内容区域 -->
+    <main class="pt-16 min-h-screen transition-all duration-300" id="mainContent">
+        <div class="container mx-auto px-4 py-8 max-w-5xl">
+            <!-- Hero Section -->
+            <section class="text-center mb-16 animate-fadeIn">
+                <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                    打造你的全栈开发技能树
+                </h1>
+                <p class="text-lg md:text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
+                    从前端UI到后端架构,从数据库优化到DevOps实践,再到AI智能应用开发。
+                    <br class="hidden md:block">
+                    系统化学习路径 + 实战项目经验 + 前沿技术探索,助你成为抢手的全栈工程师!
+                </p>
+                <div class="flex flex-wrap justify-center gap-4">
+                    <a href="#frontend" class="px-8 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg font-medium hover:shadow-lg hover:scale-105 transition-all duration-200">
+                        开始学习之旅
+                    </a>
+                    <a href="#about" class="px-8 py-3 bg-white text-blue-600 border-2 border-blue-600 rounded-lg font-medium hover:bg-blue-50 hover:scale-105 transition-all duration-200">
+                        查看学习路径
+                    </a>
+                </div>
+            </section>
+
+            <!-- 技术栈卡片 -->
+            <section class="mb-16">
+                <h2 class="text-3xl font-bold text-center mb-12 text-gray-800">
+                    <span class="border-b-4 border-blue-500 pb-2">核心技术栈</span>
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- 前端开发卡片 -->
+                    <div class="group bg-white rounded-xl shadow-md hover:shadow-2xl transition-all duration-300 overflow-hidden cursor-pointer transform hover:-translate-y-2" onclick="window.location.hash = '#frontend'">
+                        <div class="h-2 bg-gradient-to-r from-blue-500 to-cyan-500"></div>
+                        <div class="p-6">
+                            <div class="text-5xl mb-4 group-hover:scale-110 transition-transform duration-300">💻</div>
+                            <h3 class="text-2xl font-bold mb-3 text-gray-800">前端开发</h3>
+                            <p class="text-gray-600 mb-4">从基础到进阶,掌握HTML5、CSS3、JavaScript ES6+,深入React、Vue等主流框架,打造精美交互界面</p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 bg-blue-100 text-blue-600 rounded-full text-sm">HTML/CSS</span>
+                                <span class="px-3 py-1 bg-blue-100 text-blue-600 rounded-full text-sm">JavaScript</span>
+                                <span class="px-3 py-1 bg-blue-100 text-blue-600 rounded-full text-sm">React</span>
+                                <span class="px-3 py-1 bg-blue-100 text-blue-600 rounded-full text-sm">Vue</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 后端开发卡片 -->
+                    <div class="group bg-white rounded-xl shadow-md hover:shadow-2xl transition-all duration-300 overflow-hidden cursor-pointer transform hover:-translate-y-2" onclick="window.location.hash = '#backend'">
+                        <div class="h-2 bg-gradient-to-r from-purple-500 to-pink-500"></div>
+                        <div class="p-6">
+                            <div class="text-5xl mb-4 group-hover:scale-110 transition-transform duration-300">⚙️</div>
+                            <h3 class="text-2xl font-bold mb-3 text-gray-800">后端开发</h3>
+                            <p class="text-gray-600 mb-4">深入学习服务端开发,掌握Node.js、Python、Java、Go等主流技术,构建高性能API和微服务架构</p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 bg-purple-100 text-purple-600 rounded-full text-sm">Node.js</span>
+                                <span class="px-3 py-1 bg-purple-100 text-purple-600 rounded-full text-sm">Python</span>
+                                <span class="px-3 py-1 bg-purple-100 text-purple-600 rounded-full text-sm">Java</span>
+                                <span class="px-3 py-1 bg-purple-100 text-purple-600 rounded-full text-sm">Go</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 数据库卡片 -->
+                    <div class="group bg-white rounded-xl shadow-md hover:shadow-2xl transition-all duration-300 overflow-hidden cursor-pointer transform hover:-translate-y-2" onclick="window.location.hash = '#database'">
+                        <div class="h-2 bg-gradient-to-r from-green-500 to-emerald-500"></div>
+                        <div class="p-6">
+                            <div class="text-5xl mb-4 group-hover:scale-110 transition-transform duration-300">🗄️</div>
+                            <h3 class="text-2xl font-bold mb-3 text-gray-800">数据库</h3>
+                            <p class="text-gray-600 mb-4">精通MySQL、MongoDB、Redis等主流数据库,掌握数据建模、索引优化和高并发处理技巧</p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 bg-green-100 text-green-600 rounded-full text-sm">MySQL</span>
+                                <span class="px-3 py-1 bg-green-100 text-green-600 rounded-full text-sm">MongoDB</span>
+                                <span class="px-3 py-1 bg-green-100 text-green-600 rounded-full text-sm">Redis</span>
+                                <span class="px-3 py-1 bg-green-100 text-green-600 rounded-full text-sm">PostgreSQL</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- DevOps卡片 -->
+                    <div class="group bg-white rounded-xl shadow-md hover:shadow-2xl transition-all duration-300 overflow-hidden cursor-pointer transform hover:-translate-y-2" onclick="window.location.hash = '#devops'">
+                        <div class="h-2 bg-gradient-to-r from-orange-500 to-red-500"></div>
+                        <div class="p-6">
+                            <div class="text-5xl mb-4 group-hover:scale-110 transition-transform duration-300">🚀</div>
+                            <h3 class="text-2xl font-bold mb-3 text-gray-800">DevOps</h3>
+                            <p class="text-gray-600 mb-4">掌握Docker容器化、Kubernetes编排、CI/CD流程,实现自动化部署,提升开发效率和项目质量</p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 bg-orange-100 text-orange-600 rounded-full text-sm">Docker</span>
+                                <span class="px-3 py-1 bg-orange-100 text-orange-600 rounded-full text-sm">Kubernetes</span>
+                                <span class="px-3 py-1 bg-orange-100 text-orange-600 rounded-full text-sm">CI/CD</span>
+                                <span class="px-3 py-1 bg-orange-100 text-orange-600 rounded-full text-sm">AWS</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 工具与最佳实践 -->
+                    <div class="group bg-white rounded-xl shadow-md hover:shadow-2xl transition-all duration-300 overflow-hidden cursor-pointer transform hover:-translate-y-2">
+                        <div class="h-2 bg-gradient-to-r from-indigo-500 to-blue-500"></div>
+                        <div class="p-6">
+                            <div class="text-5xl mb-4 group-hover:scale-110 transition-transform duration-300">🛠️</div>
+                            <h3 class="text-2xl font-bold mb-3 text-gray-800">开发工具</h3>
+                            <p class="text-gray-600 mb-4">熟练使用各种开发工具,提升编码效率和代码质量</p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 bg-indigo-100 text-indigo-600 rounded-full text-sm">Git</span>
+                                <span class="px-3 py-1 bg-indigo-100 text-indigo-600 rounded-full text-sm">VS Code</span>
+                                <span class="px-3 py-1 bg-indigo-100 text-indigo-600 rounded-full text-sm">Webpack</span>
+                                <span class="px-3 py-1 bg-indigo-100 text-indigo-600 rounded-full text-sm">ESLint</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 架构设计 -->
+                    <div class="group bg-white rounded-xl shadow-md hover:shadow-2xl transition-all duration-300 overflow-hidden cursor-pointer transform hover:-translate-y-2">
+                        <div class="h-2 bg-gradient-to-r from-pink-500 to-rose-500"></div>
+                        <div class="p-6">
+                            <div class="text-5xl mb-4 group-hover:scale-110 transition-transform duration-300">🏗️</div>
+                            <h3 class="text-2xl font-bold mb-3 text-gray-800">架构设计</h3>
+                            <p class="text-gray-600 mb-4">学习系统架构设计模式,构建可扩展的高性能应用</p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 bg-pink-100 text-pink-600 rounded-full text-sm">微服务</span>
+                                <span class="px-3 py-1 bg-pink-100 text-pink-600 rounded-full text-sm">设计模式</span>
+                                <span class="px-3 py-1 bg-pink-100 text-pink-600 rounded-full text-sm">RESTful</span>
+                                <span class="px-3 py-1 bg-pink-100 text-pink-600 rounded-full text-sm">GraphQL</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- AI人工智能 -->
+                    <div class="group bg-white rounded-xl shadow-md hover:shadow-2xl transition-all duration-300 overflow-hidden cursor-pointer transform hover:-translate-y-2" onclick="window.location.hash = '#ai'">
+                        <div class="h-2 bg-gradient-to-r from-violet-500 to-fuchsia-500"></div>
+                        <div class="p-6">
+                            <div class="text-5xl mb-4 group-hover:scale-110 transition-transform duration-300">🤖</div>
+                            <h3 class="text-2xl font-bold mb-3 text-gray-800">AI人工智能</h3>
+                            <p class="text-gray-600 mb-4">探索前沿AI技术,学习机器学习、深度学习算法,掌握大模型应用开发,打造智能化产品</p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 bg-violet-100 text-violet-600 rounded-full text-sm">机器学习</span>
+                                <span class="px-3 py-1 bg-violet-100 text-violet-600 rounded-full text-sm">深度学习</span>
+                                <span class="px-3 py-1 bg-violet-100 text-violet-600 rounded-full text-sm">大模型</span>
+                                <span class="px-3 py-1 bg-violet-100 text-violet-600 rounded-full text-sm">AI应用</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 移动开发 -->
+                    <div class="group bg-white rounded-xl shadow-md hover:shadow-2xl transition-all duration-300 overflow-hidden cursor-pointer transform hover:-translate-y-2">
+                        <div class="h-2 bg-gradient-to-r from-teal-500 to-cyan-500"></div>
+                        <div class="p-6">
+                            <div class="text-5xl mb-4 group-hover:scale-110 transition-transform duration-300">📱</div>
+                            <h3 class="text-2xl font-bold mb-3 text-gray-800">移动开发</h3>
+                            <p class="text-gray-600 mb-4">学习移动端应用开发,掌握跨平台和原生开发技术</p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 bg-teal-100 text-teal-600 rounded-full text-sm">React Native</span>
+                                <span class="px-3 py-1 bg-teal-100 text-teal-600 rounded-full text-sm">Flutter</span>
+                                <span class="px-3 py-1 bg-teal-100 text-teal-600 rounded-full text-sm">iOS</span>
+                                <span class="px-3 py-1 bg-teal-100 text-teal-600 rounded-full text-sm">Android</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 学习路径 -->
+            <section class="mb-16">
+                <h2 class="text-3xl font-bold text-center mb-12 text-gray-800">
+                    <span class="border-b-4 border-purple-500 pb-2">学习路径</span>
+                </h2>
+                <div class="bg-white rounded-xl shadow-lg p-8">
+                    <div class="space-y-8">
+                        <!-- 阶段1 -->
+                        <div class="flex items-start gap-4">
+                            <div class="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center text-white font-bold text-lg">
+                                1
+                            </div>
+                            <div class="flex-1">
+                                <h3 class="text-xl font-bold mb-2 text-gray-800">基础入门</h3>
+                                <p class="text-gray-600 mb-3">掌握HTML、CSS、JavaScript基础知识,了解Web开发的基本原理</p>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="px-3 py-1 bg-gray-100 text-gray-700 rounded text-sm">📚 HTML5</span>
+                                    <span class="px-3 py-1 bg-gray-100 text-gray-700 rounded text-sm">🎨 CSS3</span>
+                                    <span class="px-3 py-1 bg-gray-100 text-gray-700 rounded text-sm">⚡ JavaScript ES6+</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 阶段2 -->
+                        <div class="flex items-start gap-4">
+                            <div class="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-purple-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold text-lg">
+                                2
+                            </div>
+                            <div class="flex-1">
+                                <h3 class="text-xl font-bold mb-2 text-gray-800">前端进阶</h3>
+                                <p class="text-gray-600 mb-3">学习现代前端框架和工具链,构建复杂的单页应用</p>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="px-3 py-1 bg-gray-100 text-gray-700 rounded text-sm">⚛️ React/Vue</span>
+                                    <span class="px-3 py-1 bg-gray-100 text-gray-700 rounded text-sm">📦 Webpack/Vite</span>
+                                    <span class="px-3 py-1 bg-gray-100 text-gray-700 rounded text-sm">🎯 TypeScript</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 阶段3 -->
+                        <div class="flex items-start gap-4">
+                            <div class="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-green-500 to-green-600 rounded-full flex items-center justify-center text-white font-bold text-lg">
+                                3
+                            </div>
+                            <div class="flex-1">
+                                <h3 class="text-xl font-bold mb-2 text-gray-800">后端开发</h3>
+                                <p class="text-gray-600 mb-3">深入服务端开发,掌握API设计、数据库操作和服务器部署</p>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="px-3 py-1 bg-gray-100 text-gray-700 rounded text-sm">🟢 Node.js</span>
+                                    <span class="px-3 py-1 bg-gray-100 text-gray-700 rounded text-sm">🗄️ 数据库</span>
+                                    <span class="px-3 py-1 bg-gray-100 text-gray-700 rounded text-sm">🔐 认证授权</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 阶段4 -->
+                        <div class="flex items-start gap-4">
+                            <div class="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-orange-500 to-orange-600 rounded-full flex items-center justify-center text-white font-bold text-lg">
+                                4
+                            </div>
+                            <div class="flex-1">
+                                <h3 class="text-xl font-bold mb-2 text-gray-800">全栈整合</h3>
+                                <p class="text-gray-600 mb-3">整合前后端技术,学习DevOps和云服务,构建完整的全栈应用</p>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="px-3 py-1 bg-gray-100 text-gray-700 rounded text-sm">🐳 Docker</span>
+                                    <span class="px-3 py-1 bg-gray-100 text-gray-700 rounded text-sm">☁️ 云服务</span>
+                                    <span class="px-3 py-1 bg-gray-100 text-gray-700 rounded text-sm">🔄 CI/CD</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 阶段5 -->
+                        <div class="flex items-start gap-4">
+                            <div class="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-violet-500 to-violet-600 rounded-full flex items-center justify-center text-white font-bold text-lg">
+                                5
+                            </div>
+                            <div class="flex-1">
+                                <h3 class="text-xl font-bold mb-2 text-gray-800">AI技术探索</h3>
+                                <p class="text-gray-600 mb-3">掌握人工智能基础,学习机器学习和大模型应用,打造智能化应用</p>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="px-3 py-1 bg-gray-100 text-gray-700 rounded text-sm">🤖 机器学习</span>
+                                    <span class="px-3 py-1 bg-gray-100 text-gray-700 rounded text-sm">🧠 深度学习</span>
+                                    <span class="px-3 py-1 bg-gray-100 text-gray-700 rounded text-sm">✨ AI应用开发</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 特色功能 -->
+            <section class="mb-16">
+                <h2 class="text-3xl font-bold text-center mb-12 text-gray-800">
+                    <span class="border-b-4 border-green-500 pb-2">为什么选择我们</span>
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="text-center p-6 bg-gradient-to-br from-blue-50 to-cyan-50 rounded-xl">
+                        <div class="text-4xl mb-4">📖</div>
+                        <h3 class="text-lg font-bold mb-2 text-gray-800">系统化学习</h3>
+                        <p class="text-gray-600 text-sm">完整的知识体系,循序渐进的学习路径</p>
+                    </div>
+                    <div class="text-center p-6 bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl">
+                        <div class="text-4xl mb-4">💡</div>
+                        <h3 class="text-lg font-bold mb-2 text-gray-800">实战案例</h3>
+                        <p class="text-gray-600 text-sm">丰富的代码示例和实际项目经验</p>
+                    </div>
+                    <div class="text-center p-6 bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl">
+                        <div class="text-4xl mb-4">🔄</div>
+                        <h3 class="text-lg font-bold mb-2 text-gray-800">持续更新</h3>
+                        <p class="text-gray-600 text-sm">紧跟技术发展,及时更新最新内容</p>
+                    </div>
+                    <div class="text-center p-6 bg-gradient-to-br from-orange-50 to-red-50 rounded-xl">
+                        <div class="text-4xl mb-4">🎯</div>
+                        <h3 class="text-lg font-bold mb-2 text-gray-800">目标导向</h3>
+                        <p class="text-gray-600 text-sm">明确的学习目标和职业发展规划</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CTA Section -->
+            <section class="text-center bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl p-12 text-white">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">准备好开启你的全栈开发之旅了吗?</h2>
+                <p class="text-lg mb-8 opacity-90">从零基础到技术专家,系统化学习路径助你快速成长</p>
+                <a href="#frontend" class="inline-block px-8 py-4 bg-white text-blue-600 rounded-lg font-bold text-lg hover:bg-gray-100 hover:scale-105 transition-all duration-200 shadow-lg">
+                    立即开始学习 →
+                </a>
+            </section>
+        </div>
+    </main>
+
+    <!-- 返回顶部按钮 -->
+    <button class="fixed bottom-8 right-8 w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-full shadow-lg opacity-0 invisible transition-all duration-300 hover:scale-110 z-50" id="backToTop" aria-label="返回顶部">
+        <svg class="w-6 h-6 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
+        </svg>
+    </button>
+
+    <!-- 页脚 -->
+    <footer class="bg-gray-900 text-gray-400 py-8 w-full transition-all duration-300">
+        <div class="container mx-auto px-4 text-center">
+            <p class="text-sm">&copy; 2025 全栈开发知识库. 致力于传播优质的技术知识.</p>
+            <p class="text-xs mt-2">使用 HTML + Tailwind CSS + JavaScript 构建</p>
+        </div>
+    </footer>
+
+    <!-- Prism.js 代码高亮 JS - 核心库 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
+
+    <!-- Prism.js 语言支持 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-typescript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-jsx.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-css.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-sql.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
+
+    <!-- 自定义脚本 - 按依赖顺序加载 -->
+    <script src="js/utils.js"></script>
+    <script src="js/router.js"></script>
+</body>
+</html>
