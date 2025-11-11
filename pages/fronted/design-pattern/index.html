@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="JavaScript设计模式 - 前端开发学习">
+    <meta name="keywords" content="设计模式,JavaScript,前端开发,单例模式,工厂模式">
+    <title>JavaScript设计模式 - 全栈开发知识库</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Tailwind 配置 -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3b82f6',
+                        secondary: '#8b5cf6',
+                        accent: '#06b6d4',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Prism.js 代码高亮 CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css" rel="stylesheet" />
+
+    <!-- 自定义样式 -->
+    <link rel="stylesheet" href="../../../css/custom.css">
+</head>
+<body class="bg-gray-50 text-gray-900">
+
+    <!-- 顶部导航栏 -->
+    <header class="fixed top-0 left-0 right-0 h-16 bg-gradient-to-r from-blue-500 to-purple-600 shadow-lg z-50">
+        <div class="container mx-auto px-4 h-full flex items-center justify-between">
+            <!-- Logo -->
+            <div class="flex items-center gap-3 cursor-pointer" onclick="window.location.href = '../../../index.html'">
+                <span class="text-4xl">🚀</span>
+                <span class="text-white text-xl font-bold hidden sm:inline">全栈开发知识库</span>
+                <span class="text-white text-xl font-bold sm:hidden">全栈知识</span>
+            </div>
+
+            <!-- 面包屑导航 -->
+            <nav class="hidden md:flex items-center gap-2 text-white/90 text-sm">
+                <a href="../../../index.html" class="hover:text-white">首页</a>
+                <span>/</span>
+                <a href="../index.html" class="hover:text-white">前端开发</a>
+                <span>/</span>
+                <span class="text-white font-medium">设计模式</span>
+            </nav>
+
+            <!-- 移动端菜单按钮 -->
+            <button class="md:hidden flex flex-col gap-1.5 p-2" id="mobileMenuToggle" aria-label="切换侧边栏">
+                <span class="w-6 h-0.5 bg-white transition-all duration-200"></span>
+                <span class="w-6 h-0.5 bg-white transition-all duration-200"></span>
+                <span class="w-6 h-0.5 bg-white transition-all duration-200"></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- 主内容区域 -->
+    <div class="pt-16 flex min-h-screen">
+        <!-- 左侧导航栏 -->
+        <aside class="fixed left-0 top-16 bottom-0 w-64 bg-white shadow-lg overflow-y-auto transition-transform duration-300 z-40 md:translate-x-0 -translate-x-full" id="sidebar">
+            <div class="p-6">
+                <h2 class="text-2xl font-bold mb-6 text-gray-800 flex items-center gap-2">
+                    <span>🎯</span>
+                    <span>设计模式</span>
+                </h2>
+
+                <!-- 导航菜单 -->
+                <nav class="space-y-1">
+                    <!-- 介绍 -->
+                    <a href="#intro" class="nav-item block px-4 py-2 rounded-lg hover:bg-blue-50 text-gray-700 hover:text-blue-600 transition-colors duration-200">
+                        📖 设计模式简介
+                    </a>
+
+                    <!-- 创建型模式 -->
+                    <div class="mt-4">
+                        <h3 class="px-4 py-2 text-sm font-semibold text-gray-500 uppercase tracking-wider">创建型模式</h3>
+                        <a href="#singleton" class="nav-item block px-4 py-2 rounded-lg hover:bg-blue-50 text-gray-700 hover:text-blue-600 transition-colors duration-200">
+                            🔹 单例模式
+                        </a>
+                        <a href="#factory" class="nav-item block px-4 py-2 rounded-lg hover:bg-blue-50 text-gray-700 hover:text-blue-600 transition-colors duration-200">
+                            🔹 工厂模式
+                        </a>
+                        <a href="#builder" class="nav-item block px-4 py-2 rounded-lg hover:bg-blue-50 text-gray-700 hover:text-blue-600 transition-colors duration-200">
+                            🔹 建造者模式
+                        </a>
+                    </div>
+
+                    <!-- 结构型模式 -->
+                    <div class="mt-4">
+                        <h3 class="px-4 py-2 text-sm font-semibold text-gray-500 uppercase tracking-wider">结构型模式</h3>
+                        <a href="#adapter" class="nav-item block px-4 py-2 rounded-lg hover:bg-blue-50 text-gray-700 hover:text-blue-600 transition-colors duration-200">
+                            🔸 适配器模式
+                        </a>
+                        <a href="#decorator" class="nav-item block px-4 py-2 rounded-lg hover:bg-blue-50 text-gray-700 hover:text-blue-600 transition-colors duration-200">
+                            🔸 装饰器模式
+                        </a>
+                        <a href="#proxy" class="nav-item block px-4 py-2 rounded-lg hover:bg-blue-50 text-gray-700 hover:text-blue-600 transition-colors duration-200">
+                            🔸 代理模式
+                        </a>
+                    </div>
+
+                    <!-- 行为型模式 -->
+                    <div class="mt-4">
+                        <h3 class="px-4 py-2 text-sm font-semibold text-gray-500 uppercase tracking-wider">行为型模式</h3>
+                        <a href="#observer" class="nav-item block px-4 py-2 rounded-lg hover:bg-blue-50 text-gray-700 hover:text-blue-600 transition-colors duration-200">
+                            🔺 观察者模式
+                        </a>
+                        <a href="#strategy" class="nav-item block px-4 py-2 rounded-lg hover:bg-blue-50 text-gray-700 hover:text-blue-600 transition-colors duration-200">
+                            🔺 策略模式
+                        </a>
+                    </div>
+                </nav>
+
+                <!-- 返回按钮 -->
+                <div class="mt-8 pt-6 border-t border-gray-200">
+                    <a href="../index.html" class="block w-full px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg text-center font-medium hover:shadow-lg transition-all duration-200">
+                        ← 返回前端开发
+                    </a>
+                </div>
+            </div>
+        </aside>
+
+        <!-- 右侧内容区域 -->
+        <main class="flex-1 md:ml-64 transition-all duration-300" id="mainContent">
+            <div class="container mx-auto px-4 py-8 max-w-4xl">
+                <!-- 介绍部分 -->
+                <section id="intro" class="mb-16 scroll-mt-20">
+                    <h1 class="text-4xl font-bold mb-6 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                        JavaScript 设计模式
+                    </h1>
+                    <div class="bg-white rounded-xl shadow-md p-6 mb-6">
+                        <p class="text-lg text-gray-700 mb-4">
+                            设计模式是软件开发中经过验证的、可重复使用的解决方案。在JavaScript中，设计模式可以帮助我们编写更加优雅、可维护和可扩展的代码。
+                        </p>
+                        <div class="bg-blue-50 border-l-4 border-blue-500 p-4 rounded">
+                            <p class="text-gray-700">
+                                <strong>💡 提示：</strong> 设计模式不是银弹，要根据实际场景选择合适的模式，避免过度设计。
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 动态内容加载区域 -->
+                <div id="patternContent">
+                    <!-- 默认提示信息 -->
+                    <div class="bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl p-12 text-center">
+                        <div class="text-6xl mb-4">👈</div>
+                        <p class="text-xl text-gray-700 mb-2">
+                            请从左侧菜单选择一个设计模式
+                        </p>
+                        <p class="text-gray-600">
+                            点击左侧导航栏中的任意模式，查看详细介绍和代码示例
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- 返回顶部按钮 -->
+    <button class="fixed bottom-8 right-8 w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-full shadow-lg opacity-0 invisible transition-all duration-300 hover:scale-110 z-50" id="backToTop" aria-label="返回顶部">
+        <svg class="w-6 h-6 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
+        </svg>
+    </button>
+
+    <!-- Prism.js 代码高亮 JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
+
+    <!-- 自定义脚本 -->
+    <script>
+        // 移动端侧边栏切换
+        const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+        const sidebar = document.getElementById('sidebar');
+        const mainContent = document.getElementById('mainContent');
+
+        mobileMenuToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('-translate-x-full');
+            sidebar.classList.toggle('translate-x-0');
+        });
+
+        // 点击内容区域关闭侧边栏（移动端）
+        mainContent.addEventListener('click', () => {
+            if (window.innerWidth < 768 && !sidebar.classList.contains('-translate-x-full')) {
+                sidebar.classList.add('-translate-x-full');
+                sidebar.classList.remove('translate-x-0');
+            }
+        });
+
+        // 设计模式文件映射
+        const patternFiles = {
+            'intro': null, // 简介不需要加载文件
+            'singleton': 'singleton.html',
+            'factory': 'factory.html',
+            'builder': 'builder.html',
+            'adapter': 'adapter.html',
+            'decorator': 'decorator.html',
+            'proxy': 'proxy.html',
+            'observer': 'observer.html',
+            'strategy': 'strategy.html'
+        };
+
+        // 加载设计模式内容
+        async function loadPattern(patternId) {
+            const contentDiv = document.getElementById('patternContent');
+            const introSection = document.getElementById('intro');
+
+            // 如果是简介，显示简介部分，隐藏动态内容
+            if (patternId === 'intro') {
+                introSection.style.display = 'block';
+                contentDiv.style.display = 'none';
+                return;
+            }
+
+            // 隐藏简介部分，显示动态内容
+            introSection.style.display = 'none';
+            contentDiv.style.display = 'block';
+
+            const fileName = patternFiles[patternId];
+
+            if (!fileName) {
+                contentDiv.innerHTML = `
+                    <div class="bg-yellow-50 border-l-4 border-yellow-500 rounded-xl p-8 text-center">
+                        <div class="text-5xl mb-4">⚠️</div>
+                        <p class="text-xl text-gray-700 mb-2">该模式内容正在准备中</p>
+                        <p class="text-gray-600">敬请期待...</p>
+                    </div>
+                `;
+                return;
+            }
+
+            try {
+                // 显示加载状态
+                contentDiv.innerHTML = `
+                    <div class="bg-white rounded-xl p-12 text-center">
+                        <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mb-4"></div>
+                        <p class="text-gray-600">加载中...</p>
+                    </div>
+                `;
+
+                // 加载文件内容
+                const response = await fetch(fileName);
+
+                if (!response.ok) {
+                    throw new Error('文件加载失败');
+                }
+
+                const html = await response.text();
+                contentDiv.innerHTML = html;
+
+                // 执行加载的HTML中的script标签
+                const scripts = contentDiv.querySelectorAll('script');
+                scripts.forEach(oldScript => {
+                    const newScript = document.createElement('script');
+                    Array.from(oldScript.attributes).forEach(attr => {
+                        newScript.setAttribute(attr.name, attr.value);
+                    });
+                    newScript.textContent = oldScript.textContent;
+                    oldScript.parentNode.replaceChild(newScript, oldScript);
+                });
+
+                // 重新初始化代码高亮
+                if (window.Prism) {
+                    Prism.highlightAll();
+                }
+
+                // 滚动到内容顶部
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            } catch (error) {
+                console.error('加载失败:', error);
+                contentDiv.innerHTML = `
+                    <div class="bg-red-50 border-l-4 border-red-500 rounded-xl p-8 text-center">
+                        <div class="text-5xl mb-4">❌</div>
+                        <p class="text-xl text-gray-700 mb-2">内容加载失败</p>
+                        <p class="text-gray-600">请检查文件是否存在: ${fileName}</p>
+                    </div>
+                `;
+            }
+        }
+
+        // 导航点击事件
+        const navItems = document.querySelectorAll('.nav-item');
+
+        navItems.forEach(item => {
+            item.addEventListener('click', async (e) => {
+                e.preventDefault();
+
+                const href = item.getAttribute('href');
+                const patternId = href.replace('#', '');
+
+                // 更新导航高亮
+                navItems.forEach(nav => {
+                    nav.classList.remove('bg-blue-50', 'text-blue-600', 'font-semibold');
+                });
+                item.classList.add('bg-blue-50', 'text-blue-600', 'font-semibold');
+
+                // 加载对应的模式内容
+                await loadPattern(patternId);
+
+                // 移动端点击后关闭侧边栏
+                if (window.innerWidth < 768) {
+                    sidebar.classList.add('-translate-x-full');
+                    sidebar.classList.remove('translate-x-0');
+                }
+            });
+        });
+
+        // 返回顶部按钮
+        const backToTop = document.getElementById('backToTop');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                backToTop.classList.remove('opacity-0', 'invisible');
+                backToTop.classList.add('opacity-100', 'visible');
+            } else {
+                backToTop.classList.add('opacity-0', 'invisible');
+                backToTop.classList.remove('opacity-100', 'visible');
+            }
+        });
+
+        backToTop.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // 页面加载时，检查URL hash
+        window.addEventListener('DOMContentLoaded', () => {
+            const hash = window.location.hash.replace('#', '');
+            if (hash && patternFiles.hasOwnProperty(hash)) {
+                const targetNav = document.querySelector(`a[href="#${hash}"]`);
+                if (targetNav) {
+                    targetNav.click();
+                }
+            }
+        });
+    </script>
+</body>
+</html>
